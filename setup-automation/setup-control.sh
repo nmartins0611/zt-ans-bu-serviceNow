@@ -40,6 +40,7 @@ su - $USER -c 'cat >/home/$USER/.local/share/code-server/User/settings.json <<EO
 EOL
 
 cat /home/$USER/.local/share/code-server/User/settings.json'
+code-server --port 4444
 
 ##########
 
