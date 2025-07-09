@@ -17,6 +17,12 @@ virtualmachines:
             protocol: TCP
             targetPort: 443
             name: control-https
+      - name: control-4444
+        ports:
+          - port: 4444
+            protocol: TCP
+            targetPort: 4444
+            name: control-4444
     routes:
       - name: control-https
         host: control
@@ -59,6 +65,11 @@ virtualmachines:
           fH5qke1XR5LFGpndX1GuSVBhdZq94x0aGXWTQCDNIPQ3QtrQ64PBF1vRFdJ6o/FI
           uEOWpQhGYHMC0A==
           -----END CERTIFICATE-----
+      - name: control-4444
+        host: control
+        service: control-4444
+        targetPort: 4444
+        tls: false
 
   - name: "node01"
     image: "rhel-9.5"
