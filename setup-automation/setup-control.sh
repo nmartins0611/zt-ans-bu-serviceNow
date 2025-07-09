@@ -1,5 +1,48 @@
 #!/bin/bash
+
 USER=rhel
+
+rpm --import https://packages.microsoft.com/keys/microsoft.asc
+
+tee /etc/yum.repos.d/vscode.repo << EOF
+[code]
+name=Visual Studio Code
+baseurl=https://packages.microsoft.com/yumrepos/vscode
+enabled=1
+gpgcheck=1
+gpgkey=https://packages.microsoft.com/keys/microsoft.asc
+
+EOF
+
+yum install -y code
+
+su - $USER -c 'cat >/home/$USER/.local/share/code-server/User/settings.json <<EOL
+
+{
+    "git.ignoreLegacyWarning": true,
+    "terminal.integrated.experimentalRefreshOnResume": true,
+    "ansible.executionEnvironment.image": "ghcr.io/ansible/creator-ee:latest",
+    "window.menuBarVisibility": "visible",
+    "git.enableSmartCommit": true,
+    "workbench.tips.enabled": false,
+    "workbench.startupEditor": "readme",
+    "telemetry.enableTelemetry": false,
+    "search.smartCase": true,
+    "git.confirmSync": false,
+    "workbench.colorTheme": "Visual Studio Dark",
+    "ansible.ansible.useFullyQualifiedCollectionNames": true,
+    "files.associations": {
+        "*.yml": "ansible"
+    },
+    "ansible.executionEnvironment.enabled": true
+}
+
+EOL
+
+cat /home/$USER/.local/share/code-server/User/settings.json'
+
+##########
+
 
 # su - $USER -c is used a lot because lifecycle scripts always run as root
 # but projects and playbooks should be owned by the user that will be using them (e.g. rhel)
